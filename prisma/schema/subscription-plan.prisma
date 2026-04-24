@@ -1,0 +1,22 @@
+model SubscriptionPlan {
+  id               String   @id @default(uuid())
+  name             String   @unique
+  description      String?
+  priceMonthly     Decimal  @map("price_monthly") @db.Decimal(10, 2)
+  priceYearly      Decimal? @map("price_yearly") @db.Decimal(10, 2)
+  maxMembers       Int      @map("max_members")
+  maxLeadsPerMonth Int      @map("max_leads_per_month")
+  maxTechnicians   Int      @map("max_technicians")
+  maxDispatchers   Int      @map("max_dispatchers")
+  hasCallRecording Boolean  @default(false) @map("has_call_recording")
+  hasLiveTracking  Boolean  @default(false) @map("has_live_tracking")
+  hasPayments      Boolean  @default(false) @map("has_payments")
+  hasApiAccess     Boolean  @default(false) @map("has_api_access")
+  isActive         Boolean  @default(true) @map("is_active")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  subscriptions Subscription[]
+
+  @@map("subscription_plans")
+}

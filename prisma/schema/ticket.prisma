@@ -1,0 +1,31 @@
+model Ticket {
+  id         String         @id @default(uuid())
+  title      String
+  body       String?
+  priority   TicketPriority @default(NORMAL)
+  status     TicketStatus   @default(OPEN)
+  resolvedAt DateTime?      @map("resolved_at")
+  createdAt  DateTime       @default(now()) @map("created_at")
+  updatedAt  DateTime       @updatedAt @map("updated_at")
+
+  companyId String  @map("company_id")
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  leadId String @map("lead_id")
+  lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  createdById String? @map("created_by_id")
+  createdBy   User?   @relation("TicketCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+
+  assignedToId String? @map("assigned_to_id")
+  assignedTo   User?   @relation("TicketAssignedTo", fields: [assignedToId], references: [id], onDelete: SetNull)
+
+  @@index([companyId])
+  @@index([companyId, status])
+  @@index([companyId, priority, status])
+  @@index([leadId])
+  @@index([assignedToId])
+  @@index([priority, status])
+  @@index([createdAt(sort: Asc)])
+  @@map("tickets")
+}

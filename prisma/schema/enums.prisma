@@ -1,0 +1,111 @@
+enum Role {
+  PLATFORM_ADMIN
+  COMPANY_ADMIN
+  DISPATCHER
+  TECHNICIAN
+  CUSTOMER
+}
+
+enum CustomerStatus {
+  ACTIVE
+  INACTIVE
+  BANNED
+}
+
+enum TechnicianStatus {
+  AVAILABLE
+  BUSY
+  OFFLINE
+}
+
+enum LeadStatus {
+  NEW
+  ASSIGNED
+  EN_ROUTE
+  COMPLETED
+  MISSED
+  CANCELLED
+}
+
+enum LeadSource {
+  PHONE
+  WEB
+  APP
+}
+
+enum TicketPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum CallDirection {
+  INBOUND
+  OUTBOUND
+}
+
+enum CallStatus {
+  RINGING
+  DIALING
+  IN_PROGRESS
+  COMPLETED
+  MISSED
+  VOICEMAIL
+  FAILED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum SubscriptionStatus {
+  TRIALING
+  ACTIVE
+  PAST_DUE
+  CANCELLED
+  SUSPENDED
+  EXPIRED
+}
+
+enum NotificationType {
+  NEW_LEAD
+  JOB_ASSIGNED
+  JOB_COMPLETED
+  MISSED_CALL
+  NEW_MESSAGE
+  TICKET_ASSIGNED
+  PAYMENT_RECEIVED
+  JOB_STATUS_UPDATE
+  TECHNICIAN_ARRIVING
+  SUBSCRIPTION_EXPIRING
+  MEMBER_LIMIT_REACHED
+  SYSTEM
+}
+
+enum SenderType {
+  DISPATCHER
+  TECHNICIAN
+  CUSTOMER
+  SYSTEM
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  ASSIGN
+  STATUS_CHANGE
+  LOGIN
+  LOGOUT
+}

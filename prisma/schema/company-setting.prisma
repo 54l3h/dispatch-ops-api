@@ -1,0 +1,14 @@
+model CompanySetting {
+  id        String   @id @default(uuid())
+  key       String
+  value     String
+  label     String?
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  companyId String  @map("company_id")
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@unique([companyId, key])
+  @@index([companyId])
+  @@map("company_settings")
+}

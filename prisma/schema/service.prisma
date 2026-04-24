@@ -1,0 +1,48 @@
+// ─────────────────────────────────────────────────────────────
+// SERVICE
+// Each company defines its own list of services.
+// Seeded defaults (CAR_LOCKOUT, HOME_LOCKOUT …) can be inserted
+// at company creation time; companies can add custom ones on top.
+// ─────────────────────────────────────────────────────────────
+
+model Service {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  basePrice   Decimal? @map("base_price") @db.Decimal(10, 2)
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  companyId String  @map("company_id")
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  technicianServices TechnicianService[]
+  leads              Lead[]
+
+  @@unique([companyId, name])
+  @@index([companyId])
+  @@index([companyId, isActive])
+  @@map("services")
+}
+
+// ─────────────────────────────────────────────────────────────
+// TECHNICIAN SERVICE  (junction table)
+// Records which services a technician is qualified to perform.
+// ─────────────────────────────────────────────────────────────
+
+model TechnicianService {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  technicianId String           @map("technician_id")
+  technician   TechnicianProfile @relation(fields: [technicianId], references: [id], onDelete: Cascade)
+
+  serviceId String  @map("service_id")
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@unique([technicianId, serviceId])
+  @@index([technicianId])
+  @@index([serviceId])
+  @@map("technician_services")
+}

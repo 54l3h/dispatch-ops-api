@@ -1,0 +1,25 @@
+model TechnicianProfile {
+  id        String           @id @default(uuid())
+  extension String
+  zone      String
+  status    TechnicianStatus @default(AVAILABLE)
+  createdAt DateTime         @default(now()) @map("created_at")
+  updatedAt DateTime         @updatedAt @map("updated_at")
+
+  userId String @unique @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  companyId String  @map("company_id")
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  locations        TechnicianLocation[]
+  technicianServices TechnicianService[]
+  leads            Lead[]
+  calls            Call[]
+
+  @@unique([companyId, extension])
+  @@index([companyId])
+  @@index([companyId, status])
+  @@index([companyId, zone, status])
+  @@map("technician_profiles")
+}

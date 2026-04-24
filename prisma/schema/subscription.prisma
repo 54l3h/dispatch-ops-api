@@ -1,0 +1,24 @@
+model Subscription {
+  id                   String             @id @default(uuid())
+  status               SubscriptionStatus @default(TRIALING)
+  currentPeriodStart   DateTime           @map("current_period_start")
+  currentPeriodEnd     DateTime           @map("current_period_end")
+  trialEndsAt          DateTime?          @map("trial_ends_at")
+  cancelledAt          DateTime?          @map("cancelled_at")
+  leadsThisMonth       Int                @default(0) @map("leads_this_month")
+  membersCount         Int                @default(0) @map("members_count")
+  stripeCustomerId     String?            @unique @map("stripe_customer_id")
+  stripeSubscriptionId String?            @unique @map("stripe_subscription_id")
+  createdAt            DateTime           @default(now()) @map("created_at")
+  updatedAt            DateTime           @updatedAt @map("updated_at")
+
+  companyId String  @unique @map("company_id")
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  planId String           @map("plan_id")
+  plan   SubscriptionPlan @relation(fields: [planId], references: [id])
+
+  @@index([status])
+  @@index([currentPeriodEnd])
+  @@map("subscriptions")
+}

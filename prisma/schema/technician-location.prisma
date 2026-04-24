@@ -1,0 +1,13 @@
+model TechnicianLocation {
+  id         String   @id @default(uuid())
+  lat        Float
+  lng        Float
+  accuracyM  Float?   @map("accuracy_m")
+  recordedAt DateTime @default(now()) @map("recorded_at")
+
+  technicianProfileId String            @map("technician_profile_id")
+  technicianProfile   TechnicianProfile @relation(fields: [technicianProfileId], references: [id], onDelete: Cascade)
+
+  @@index([technicianProfileId, recordedAt(sort: Desc)])
+  @@map("technician_locations")
+}

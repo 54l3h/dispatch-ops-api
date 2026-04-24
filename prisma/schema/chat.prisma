@@ -1,0 +1,32 @@
+model ChatRoom {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  companyId String  @map("company_id")
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  leadId String @unique @map("lead_id")
+  lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  messages ChatMessage[]
+
+  @@index([companyId])
+  @@map("chat_rooms")
+}
+
+model ChatMessage {
+  id         String     @id @default(uuid())
+  body       String
+  senderType SenderType @map("sender_type")
+  readAt     DateTime?  @map("read_at")
+  createdAt  DateTime   @default(now()) @map("created_at")
+
+  roomId String   @map("room_id")
+  room   ChatRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  userId String? @map("user_id")
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([roomId, createdAt(sort: Asc)])
+  @@map("chat_messages")
+}

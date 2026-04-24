@@ -1,0 +1,45 @@
+model Lead {
+  id             String     @id @default(uuid())
+  customerName   String     @map("customer_name")
+  customerPhone  String     @map("customer_phone")
+  customerEmail  String?    @map("customer_email")
+  status         LeadStatus @default(NEW)
+  zone           String
+  address        String?
+  estimatedValue Decimal?   @map("estimated_value") @db.Decimal(10, 2)
+  actualValue    Decimal?   @map("actual_value") @db.Decimal(10, 2)
+  source         LeadSource @default(PHONE)
+  notes          String?
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime   @updatedAt @map("updated_at")
+
+  companyId String  @map("company_id")
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  serviceId String  @map("service_id")
+  service   Service @relation(fields: [serviceId], references: [id])
+
+  customerProfileId String?          @map("customer_profile_id")
+  customerProfile   CustomerProfile? @relation(fields: [customerProfileId], references: [id], onDelete: SetNull)
+
+  technicianProfileId String?            @map("technician_profile_id")
+  technicianProfile   TechnicianProfile? @relation(fields: [technicianProfileId], references: [id], onDelete: SetNull)
+
+  dispatcherId String? @map("dispatcher_id")
+  dispatcher   User?   @relation("LeadDispatcher", fields: [dispatcherId], references: [id], onDelete: SetNull)
+
+  tickets   Ticket[]
+  calls     Call[]
+  chatRoom  ChatRoom?
+  payment   Payment?
+  auditLogs AuditLog[]
+
+  @@index([companyId])
+  @@index([companyId, status])
+  @@index([companyId, zone])
+  @@index([companyId, status, zone])
+  @@index([customerProfileId])
+  @@index([technicianProfileId])
+  @@index([createdAt(sort: Desc)])
+  @@map("leads")
+}

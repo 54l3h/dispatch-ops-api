@@ -1,0 +1,1 @@
+// buffers pings in memory, bulk DB write every 10s

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { CreateServiceDto } from 'src/modules/services/dto/create-service.dto';
 import { ServiceRepository } from 'src/modules/services/service.repository';
 
 @Injectable()
@@ -11,5 +12,9 @@ export class ServicesService {
 
   findOne(id: string) {
     return this.serviceRepo.findOne(id);
+  }
+
+  create(dto: CreateServiceDto) {
+    return this.serviceRepo.create(dto);
   }
 }

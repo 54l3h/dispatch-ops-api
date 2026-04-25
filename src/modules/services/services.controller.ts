@@ -1,7 +1,8 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Post } from '@nestjs/common';
+import { CreateServiceDto } from 'src/modules/services/dto/create-service.dto';
 import { ServicesService } from 'src/modules/services/services.service';
 
-@Controller()
+@Controller('services')
 export class ServicesController {
   constructor(private readonly servicesService: ServicesService) {}
 
@@ -13,8 +14,11 @@ export class ServicesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
+    return this.servicesService.findOne(id);
+  }
 
-    return this.servicesService.findOne(id)
-
+  @Post()
+  createService(dto: CreateServiceDto) {
+    return this.servicesService.create(dto);
   }
 }

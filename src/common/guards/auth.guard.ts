@@ -7,8 +7,11 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { UserRepository } from 'src/modules/users/users.repository';
 import { FastifyRequest } from 'fastify';
-import { IS_PUBLIC_KEY } from 'src/modules/auth/decorators/public.decorator';
+import { IS_PUBLIC_KEY } from 'src/common/decorators/public.decorator';
 import { Reflector } from '@nestjs/core';
+export { Role as Roles } from '@prisma/client';
+import { CompanyAdminRepository } from 'src/modules/company-admin/company-admin.repository';
+import { CompanyResolverRegistery } from 'src/common/guards/company-resolver/company-resolver.registery';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -16,6 +19,7 @@ export class AuthGuard implements CanActivate {
     private readonly jwtService: JwtService,
     private readonly userRepo: UserRepository,
     private readonly reflector: Reflector,
+    private readonly companyResolverRegistery: CompanyResolverRegistery,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -47,11 +51,20 @@ export class AuthGuard implements CanActivate {
         throw new UnauthorizedException('User not found or session expired');
       }
 
-      request['user'] = {
+      const baseReqPayload = {
         id: user.id,
         role: user.role,
         email: user.email,
       };
+
+      const companyId = await this.companyResolverRegistery.resolve(
+        user.role,
+        userId,
+      );
+
+      if (companyId) baseReqPayload['companyId'] = companyId;
+
+      request['user'] = baseReqPayload;
 
       return true;
     } catch (error) {

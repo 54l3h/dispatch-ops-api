@@ -1,10 +1,3 @@
-// ─────────────────────────────────────────────────────────────
-// SERVICE
-// Each company defines its own list of services.
-// Seeded defaults (CAR_LOCKOUT, HOME_LOCKOUT …) can be inserted
-// at company creation time; companies can add custom ones on top.
-// ─────────────────────────────────────────────────────────────
-
 model Service {
   id          String   @id @default(uuid())
   name        String
@@ -25,12 +18,6 @@ model Service {
   @@index([companyId, isActive])
   @@map("services")
 }
-
-// ─────────────────────────────────────────────────────────────
-// TECHNICIAN SERVICE  (junction table)
-// Records which services a technician is qualified to perform.
-// ─────────────────────────────────────────────────────────────
-
 model TechnicianService {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now()) @map("created_at")

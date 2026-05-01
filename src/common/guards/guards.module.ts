@@ -5,7 +5,7 @@ import { DispatcherResolver } from 'src/common/guards/company-resolver/resolvers
 import { TechnicianResolver } from 'src/common/guards/company-resolver/resolvers/technician.resolver';
 import { CompanyAdminRepository } from 'src/modules/company-admin/company-admin.repository';
 import { DispatcherRepository } from 'src/modules/dispatchers/dispatcher.repository';
-import { TechnicianRepository } from 'src/modules/technicians/technician.repository';
+import { TechniciansRepository } from 'src/modules/technicians/technician.repository';
 
 @Module({
   providers: [
@@ -14,7 +14,7 @@ import { TechnicianRepository } from 'src/modules/technicians/technician.reposit
     TechnicianResolver,
     CompanyAdminRepository,
     DispatcherRepository,
-    TechnicianRepository,
+    TechniciansRepository,
     CompanyResolverRegistery,
   ],
   exports: [CompanyResolverRegistery],

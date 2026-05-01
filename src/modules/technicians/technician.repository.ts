@@ -56,4 +56,34 @@ export class TechniciansRepository {
       return { user, profile };
     });
   }
+
+  async list(cursor: string, take: number = 20, companyId: string) {
+    return await this.prisma.technicianProfile.findMany({
+      where: {
+        companyId,
+      },
+      take,
+      skip: cursor ? 1 : 0,
+      cursor: cursor ? { id: cursor } : undefined,
+      orderBy: { createdAt: 'desc' },
+      select: {
+        user: {
+          select: {
+            name: true,
+          },
+        },
+        extension: true,
+        status: true,
+        zone: true,
+        // it's not mandatory to return the company name becuase the company admin is the person who sends the request so he know s that this technician in the company which he associated to
+
+        // you could return it for now
+        company: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+  }
 }

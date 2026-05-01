@@ -24,4 +24,8 @@ export class TechniciansService {
       user.companyId!,
     );
   }
+
+  async list(cursor: string, limit: number, companyId: string) {
+    return this.techniciansRepo.list(cursor, limit ?? 20, companyId);
+  }
 }

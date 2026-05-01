@@ -2,7 +2,7 @@ model User {
   id           String   @id @default(uuid())
   email        String   @unique
   tokenVersion Int      @map("token_version")
-  passwordHash String   @map("password_hash")
+  password String   @map("password")
   name         String
   phone        String?  @unique
   role         Role

@@ -3,6 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { HashModule } from 'src/common/hash/hash.module';
 import { AuthController } from 'src/modules/auth/auth.controller';
 import { AuthService } from 'src/modules/auth/auth.service';
+import { RefreshTokensRepository } from 'src/modules/auth/refresh-tokens.repository';
 import { UsersModule } from 'src/modules/users/users.module';
 
 @Module({
@@ -17,6 +18,6 @@ import { UsersModule } from 'src/modules/users/users.module';
     HashModule,
     UsersModule,
   ],
-  providers: [AuthService],
+  providers: [AuthService, RefreshTokensRepository],
 })
 export class AuthModule {}

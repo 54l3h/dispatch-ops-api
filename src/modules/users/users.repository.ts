@@ -4,7 +4,7 @@ import { CreateUserDto } from 'src/modules/users/dto/create-user.dto';
 import { Prisma, User } from '@prisma/client';
 
 @Injectable()
-export class UserRepository {
+export class UsersRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: CreateUserDto): Promise<User> {
@@ -12,11 +12,12 @@ export class UserRepository {
   }
 
   // Changed id type to string for UUID support
-  async findById(id: string): Promise<User | null> {
+  async findById(id: string): Promise<Partial<User> | null> {
     return this.prisma.user.findUnique({
       where: { id },
       select: {
         id: true,
+        name: true,
         email: true,
         role: true,
         tokenVersion: true,
@@ -49,7 +50,6 @@ export class UserRepository {
         tokenVersion: {
           increment: 1,
         },
-        hashedRefreshToken: null, // clear current session too
       },
     });
   }

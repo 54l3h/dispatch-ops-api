@@ -5,19 +5,18 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserRepository } from 'src/modules/users/users.repository';
+import { UsersRepository } from 'src/modules/users/users.repository';
 import { FastifyRequest } from 'fastify';
 import { IS_PUBLIC_KEY } from 'src/common/decorators/public.decorator';
 import { Reflector } from '@nestjs/core';
 export { Role as Roles } from '@prisma/client';
-import { CompanyAdminRepository } from 'src/modules/company-admin/company-admin.repository';
 import { CompanyResolverRegistery } from 'src/common/guards/company-resolver/company-resolver.registery';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly userRepo: UserRepository,
+    private readonly usersRepo: UsersRepository,
     private readonly reflector: Reflector,
     private readonly companyResolverRegistery: CompanyResolverRegistery,
   ) {}
@@ -45,7 +44,7 @@ export class AuthGuard implements CanActivate {
 
     try {
       const { sub: userId, version } = await this.jwtService.verifyAsync(token);
-      const user = await this.userRepo.findById(userId);
+      const user = await this.usersRepo.findById(userId);
 
       if (!user || user.tokenVersion !== version) {
         throw new UnauthorizedException('User not found or session expired');
@@ -58,7 +57,7 @@ export class AuthGuard implements CanActivate {
       };
 
       const companyId = await this.companyResolverRegistery.resolve(
-        user.role,
+        user.role!,
         userId,
       );
 

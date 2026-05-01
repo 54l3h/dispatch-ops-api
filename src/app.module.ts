@@ -4,10 +4,12 @@ import { AppService } from './app.service';
 import { AuthModule } from 'src/modules/auth/auth.module';
 import { PrismaModule } from 'src/common/database/prisma.module';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from 'src/modules/auth/guards/auth.guard';
+import { AuthGuard } from 'src/common/guards/auth.guard';
+import { UsersModule } from 'src/modules/users/users.module';
+import { GuardsModule } from 'src/common/guards/guards.module';
 
 @Module({
-  imports: [AuthModule, PrismaModule],
+  imports: [GuardsModule, AuthModule, UsersModule, PrismaModule],
   controllers: [AppController],
   providers: [
     AppService,

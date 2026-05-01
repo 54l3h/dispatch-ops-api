@@ -12,10 +12,10 @@ export class TicketsService {
     return this.ticketRepository.findById(id);
   }
 
-  createTicket(dto: CreateTicketDto) {
-    // get the dispatcherId from the guard
-    //
+  // createTicket(dto: CreateTicketDto) {
+  //   // get the dispatcherId from the guard
+  //   //
 
-    return this.ticketRepository.createTicket(dto);
-  }
+  //   return this.ticketRepository.createTicket(dto);
+  // }
 }

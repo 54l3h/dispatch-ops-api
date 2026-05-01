@@ -5,18 +5,20 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
 import { HashService } from 'src/common/hash/hash.service';
 import { LoginDto } from 'src/modules/auth/dto/login.dto';
 import { RegisterDto } from 'src/modules/auth/dto/register.dto';
+import { RefreshTokensRepository } from 'src/modules/auth/refresh-tokens.repository';
 import { AuthResponse } from 'src/modules/auth/responses/auth.response';
 import { User } from 'src/modules/users/entities/user.entity';
-import { UserRepository } from 'src/modules/users/users.repository';
+import { UsersRepository } from 'src/modules/users/users.repository';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userRepository: UserRepository,
+    private readonly usersRepository: UsersRepository,
+    private readonly refreshTokenRepository: RefreshTokensRepository,
     private readonly hashService: HashService,
     private readonly jwtService: JwtService,
   ) {}
@@ -25,7 +27,7 @@ export class AuthService {
    * Public: Log in an existing user
    */
   async login(dto: LoginDto): Promise<AuthResponse> {
-    const user = await this.userRepository.findByEmail(dto.email);
+    const user = await this.usersRepository.findByEmail(dto.email);
     if (!user) throw new UnauthorizedException('Invalid credentials');
 
     const isPasswordValid = await this.hashService.compare(
@@ -46,7 +48,7 @@ export class AuthService {
     try {
       const hashedPassword = await this.hashService.hash(dto.password);
 
-      const user = await this.userRepository.create({
+      const user = await this.usersRepository.create({
         ...dto,
         password: hashedPassword,
         tokenVersion: 1, // start with version 1
@@ -71,11 +73,17 @@ export class AuthService {
    */
   private async getAuthenticatedResponse(user: User): Promise<AuthResponse> {
     const tokens = await this.generateTokens(user.id, user.tokenVersion);
-
     const hashedRefreshToken = await this.hashService.hash(tokens.refreshToken);
-    await this.userRepository.update(user.id, {
+
+    // Set expiration (7 days from now)
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 7);
+
+    await this.refreshTokenRepository.create(
+      user.id,
       hashedRefreshToken,
-    });
+      expiresAt,
+    );
 
     return tokens;
   }

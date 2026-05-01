@@ -14,7 +14,7 @@ export class TicketRepository {
     return await this.prisma.ticket.findFirst({ where: { id } });
   }
 
-  async createTicket(data: CreateTicketDto): Promise<Ticket | null> {
-    return await this.prisma.ticket.create({ data });
-  }
+  // async createTicket(data: CreateTicketDto): Promise<Ticket | null> {
+  //   return await this.prisma.ticket.create({ data });
+  // }
 }

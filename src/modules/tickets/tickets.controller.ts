@@ -16,8 +16,8 @@ export class TicketsController {
     return this.ticketsService.findOne(id);
   }
 
-  @Post(':id')
-  createTicket(@Body() dto: CreateTicketDto) {
-    return this.ticketsService.createTicket(dto);
-  }
+  // @Post(':id')
+  // createTicket(@Body() dto: CreateTicketDto) {
+  //   return this.ticketsService.createTicket(dto);
+  // }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from 'src/modules/auth/auth.service';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { Public } from 'src/common/decorators/public.decorator';
@@ -26,17 +26,17 @@ export class AuthController {
   @Post('refresh')
   @HttpCode(HttpStatus.ACCEPTED)
   refresh() {
-    return this.authService.refresh();
+    // return this.authService.refresh();
   }
 
   @Post('logout')
   @HttpCode(HttpStatus.ACCEPTED)
   logout() {
-    return this.authService.logout(dto);
+    // return this.authService.logout(dto);
   }
 
   @Get('me')
   getProfile() {
-    return this.authService.getProfile();
+    // return this.authService.getProfile();
   }
 }

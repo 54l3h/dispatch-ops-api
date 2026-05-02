@@ -67,8 +67,10 @@ export class TechniciansRepository {
       cursor: cursor ? { id: cursor } : undefined,
       orderBy: { createdAt: 'desc' },
       select: {
+        id: true,
         user: {
           select: {
+            id: true,
             name: true,
           },
         },

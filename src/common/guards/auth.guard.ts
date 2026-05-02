@@ -60,13 +60,17 @@ export class AuthGuard implements CanActivate {
         user.role!,
         userId,
       );
+      console.log({ companyId });
 
       if (companyId) baseReqPayload['companyId'] = companyId;
 
       request['user'] = baseReqPayload;
+      console.log({ user });
 
       return true;
     } catch (error) {
+      console.log(error);
+
       throw new UnauthorizedException('Unauthorized access');
     }
   }

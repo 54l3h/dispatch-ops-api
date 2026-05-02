@@ -1,16 +1,16 @@
-export class User {
-  id: string;
-  email: string;
-  name: string;
+// export class User {
+//   id: string;
+//   email: string;
+//   name: string;
   
-  password?: string;
-  hashedRefreshToken?: string | null;
-  tokenVersion: number;
+//   password?: string;
+//   hashedRefreshToken?: string | null;
+//   tokenVersion: number;
 
-  createdAt: Date;
-  updatedAt: Date;
+//   createdAt: Date;
+//   updatedAt: Date;
 
-  constructor(partial: Partial<User>) {
-    Object.assign(this, partial);
-  }
-}
+//   constructor(partial: Partial<User>) {
+//     Object.assign(this, partial);
+//   }
+// }

@@ -4,8 +4,6 @@ model SubscriptionPlan {
   description      String?
   priceMonthly     Decimal  @map("price_monthly") @db.Decimal(10, 2)
   priceYearly      Decimal? @map("price_yearly") @db.Decimal(10, 2)
-  maxMembers       Int      @map("max_members")
-  maxLeadsPerMonth Int      @map("max_leads_per_month")
   maxTechnicians   Int      @map("max_technicians")
   maxDispatchers   Int      @map("max_dispatchers")
   hasCallRecording Boolean  @default(false) @map("has_call_recording")

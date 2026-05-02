@@ -1,9 +1,20 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+} from '@nestjs/common';
 import { AuthService } from 'src/modules/auth/auth.service';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { Public } from 'src/common/decorators/public.decorator';
 import { LoginDto } from 'src/modules/auth/dto/login.dto';
 import { RegisterDto } from 'src/modules/auth/dto/register.dto';
+import type { RequestUser } from 'src/common/types/RequestUser.type';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { Role } from '@prisma/client';
+import { RegisterCompanyDto } from 'src/modules/auth/dto/register-company.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -23,11 +34,17 @@ export class AuthController {
   }
 
   @Public()
-  @Post('refresh')
-  @HttpCode(HttpStatus.ACCEPTED)
-  refresh() {
-    // return this.authService.refresh();
+  @Post('register/company')
+  registerCompany(@Body() dto: RegisterCompanyDto) {
+    return this.authService.registerCompany(dto);
   }
+
+  // @Public()
+  // @Post('refresh')
+  // @HttpCode(HttpStatus.ACCEPTED)
+  // refresh() {
+  //   return this.authService.refresh();
+  // }
 
   @Post('logout')
   @HttpCode(HttpStatus.ACCEPTED)
@@ -36,7 +53,9 @@ export class AuthController {
   }
 
   @Get('me')
-  getProfile() {
-    // return this.authService.getProfile();
+  getProfile(@CurrentUser() user: RequestUser) {
+    console.log(user);
+
+    return this.authService.getProfile(user);
   }
 }

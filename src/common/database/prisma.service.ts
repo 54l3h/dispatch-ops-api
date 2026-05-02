@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
@@ -16,13 +17,19 @@ export class PrismaService
     });
 
     const adapter = new PrismaPg(pool);
+    
     super({ adapter });
 
     this.pool = pool;
   }
 
   async onModuleInit() {
-    await this.$connect();
+    try {
+      await this.$connect();
+      console.log('Successfully connected to the database');
+    } catch (error) {
+      console.error('Failed to connect to the database:', error);
+    }
   }
 
   async onModuleDestroy() {

@@ -15,7 +15,7 @@ import { CreateTechnicianDto } from 'src/modules/technicians/dto/create-technici
 import { TechniciansService } from 'src/modules/technicians/technicians.service';
 
 @Controller('technicians')
-export class TechnicianController {
+export class TechniciansController {
   constructor(private readonly techniciansService: TechniciansService) {}
 
   @Post()
@@ -25,8 +25,9 @@ export class TechnicianController {
   }
 
   @Get()
+  @Roles(Role.COMPANY_ADMIN, Role.DISPATCHER)
   list(
-    @Query('cursor', new ParseUUIDPipe()) cursor: string,
+    @Query('cursor', new ParseUUIDPipe({ optional: true })) cursor: string,
     @Query('limit', new ParseIntPipe()) limit: number,
     @CurrentUser() user: RequestUser,
   ) {

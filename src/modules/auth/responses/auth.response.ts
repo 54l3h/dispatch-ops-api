@@ -2,10 +2,10 @@ import { Expose } from "class-transformer";
 
 export class AuthResponse {
   @Expose()
-  accessToken: string;
+  accessToken!: string;
 
   @Expose()
-  refreshToken: string;
+  refreshToken!: string;
 
   constructor(partial: Partial<AuthResponse>) {
     Object.assign(this, partial);
